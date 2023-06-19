@@ -41,4 +41,11 @@ position = Vector2( 0, -33 )
 rect = Rect2( -50, -33, 100, 66 )
 process_parent = true
 physics_process_parent = true
+
+[node name="FloorDetector" type="RayCast2D" parent="."]
+position = Vector2( -48, -16 )
+enabled = true
+cast_to = Vector2( 0, 32 )
+collision_mask = 4
+
 [connection signal="area_entered" from="StompArea2D" to="." method="_on_StompArea2D_area_entered"]

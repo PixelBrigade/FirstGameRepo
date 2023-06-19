@@ -1,19 +1,90 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://src/Actors/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player.png" type="Texture" id=2]
 
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 384, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 576, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 2 )
+region = Rect2( 768, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 2 )
+region = Rect2( 960, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 2 )
+region = Rect2( 1152, 576, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 2 )
+region = Rect2( 1344, 576, 192, 192 )
+
+[sub_resource type="SpriteFrames" id=17]
+animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "Death",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 9 ), SubResource( 9 ), SubResource( 10 ), SubResource( 10 ), SubResource( 11 ), SubResource( 11 ), SubResource( 12 ), SubResource( 12 ), SubResource( 13 ), SubResource( 13 ), SubResource( 14 ), SubResource( 14 ), SubResource( 15 ), SubResource( 15 ), SubResource( 16 ), SubResource( 16 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [sub_resource type="OccluderPolygon2D" id=1]
 polygon = PoolVector2Array( -47.7193, -80.1353, -45.552, -86.1556, -40.2541, -93.1392, -32.7889, -96.9922, 32.4715, -96.5106, 38.7327, -94.5841, 44.9938, -89.0453, 47.6427, -82.0618, 48.1244, -17.5238, 45.957, -10.2994, 41.6224, -5.00154, 33.9164, 0.296349, -31.1032, -0.18528, -39.5316, -4.2791, -45.0704, -10.0586, -47.4785, -16.5606 )
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 40, 41 )
+[sub_resource type="RectangleShape2D" id=18]
+extents = Vector2( 21.5, 47.5 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 45.6478, 41.7715 )
+extents = Vector2( 36, 41.7715 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 48, 8 )
+extents = Vector2( 44, 8 )
 
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 4
@@ -33,37 +104,46 @@ drag_margin_right = 0.0
 editor_draw_limits = true
 editor_draw_drag_margin = true
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-offset = Vector2( 0, -48.3333 )
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 1.90735e-06, -55 )
+scale = Vector2( 0.5625, 0.572917 )
+frames = SubResource( 17 )
+animation = "Idle"
+speed_scale = 0.5
+playing = true
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="AnimatedSprite"]
+visible = false
 occluder = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -41 )
-shape = SubResource( 2 )
+visible = false
+position = Vector2( 0.5, -48.5 )
+shape = SubResource( 18 )
 
 [node name="EnemyDetector" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
 modulate = Color( 0.337255, 0.223529, 1, 1 )
-position = Vector2( 0, -48 )
+position = Vector2( -4, -48 )
 shape = SubResource( 3 )
 
 [node name="StompDetector" type="Area2D" parent="."]
+visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StompDetector"]
 modulate = Color( 0.337255, 0.223529, 1, 1 )
+position = Vector2( -4, 0 )
 shape = SubResource( 4 )
 
 [node name="WallDetector" type="RayCast2D" parent="."]
 position = Vector2( 0, -72 )
 enabled = true
-cast_to = Vector2( 64, 0 )
+cast_to = Vector2( -48, 0 )
 
 [connection signal="body_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_body_entered"]
 [connection signal="area_entered" from="StompDetector" to="." method="_on_StompDetector_area_entered"]

@@ -2,6 +2,13 @@ extends Actor
 
 export var stomp_impulse: = 600.0
 
+enum States {IDLE, WALK, DIALOGUE}
+var state = States.IDLE
+
+var can_walljump: = false
+
+onready var wall_detector = $WallDetector
+
 func _on_StompDetector_area_entered(area: Area2D) -> void:
 	_velocity = calculate_stomp_velocity(_velocity, stomp_impulse)
 
@@ -11,9 +18,31 @@ func _on_EnemyDetector_body_entered(body: PhysicsBody2D) -> void:
 func _physics_process(delta: float) -> void:
 	var is_jump_interrupted: = Input.is_action_just_released("jump") and _velocity.y < 0.0
 	var direction: = get_direction()
-	print(direction)
+	if direction.x == -1:
+		$AnimatedSprite.flip_h = true
+	elif direction.x == 1:
+		$AnimatedSprite.flip_h = false
 	
-	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
+	can_walljump = wall_detector.is_colliding()
+	
+	if can_walljump:
+		pass
+		# todo: walljump
+	else:
+		_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
+	
+	match state:
+		States.IDLE:
+			if _velocity.x != 0.0:
+				$AnimatedSprite.play("Walk")
+				state = States.WALK
+			continue
+		States.WALK:
+			if _velocity.x == 0.0:
+				$AnimatedSprite.play("Idle")
+				state = States.IDLE
+			continue
+	
 	var snap: Vector2 = Vector2.DOWN * 60.0 if direction.y == 0.0 else Vector2.ZERO
 	_velocity = move_and_slide_with_snap(
 		_velocity, snap, FLOOR_NORMAL, true

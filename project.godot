@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Tafe's betrayal (Learn you a game jam)"
+config/name="Fate's betrayal (Learn you a game jam)"
 run/main_scene="res://src/Screens/MainScreen.tscn"
 config/icon="res://icon.png"
 
